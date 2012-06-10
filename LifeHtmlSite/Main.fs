@@ -10,7 +10,6 @@ module LifeSite =
     open IntelliFactory.Html
     open IntelliFactory.WebSharper.Formlet
 
-    // Action type
     type Action =
         | Index
 
@@ -98,7 +97,7 @@ module LifeSite =
             
             canvas.Width  <- width
             canvas.Height <- height
-           
+            
             let ctx = canvas.GetContext "2d"
             ctx.Canvas.AddEventListener("click", adjustInitArrayAndRedraw, false)
 
@@ -118,7 +117,7 @@ module LifeSite =
         let rec generationLoop oldState  =
             async {
                 do! Async.Sleep 500
-                //Window.Self.Alert("Before: " + (stringifySet (!boardState)))
+                //Window.Self.Alert("Before: " + (stringifySet oldState))
                 let newState = nextGeneration oldState
                // Window.Self.Alert("After: " + (stringifySet newState))
                 do drawLife (Option.get context) newState
@@ -128,6 +127,18 @@ module LifeSite =
         [<JavaScript>]
         let startDrawing s =
             Async.Start (generationLoop initialState)
+
+        (* // This doesn't work either:
+        [<JavaScript>]
+        let rec generationLoop currentState () =
+            let newState = nextGeneration currentState
+            drawLife (Option.get context) newState
+            JavaScript.SetTimeout (generationLoop newState) 500 |> ignore
+
+        [<JavaScript>]
+        let startDrawing s = 
+            JavaScript.SetTimeout (generationLoop initialState) 500 |> ignore
+        *)
 
         [<JavaScript>]
         let Main () =
