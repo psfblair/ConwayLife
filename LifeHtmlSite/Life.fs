@@ -3,56 +3,48 @@ open IntelliFactory.WebSharper
 open IntelliFactory.WebSharper.Html5
 
 [<JavaScript>]
-let stringifySet (set:Set<int*int>) = //For debugging with Alerts (Window.Self.Alert)
-    let stringifyPairAndAdd (accum:string) (x:int,y:int) = 
-        accum + "(" + x.ToString() + "," + y.ToString() + ")"
-    Set.fold stringifyPairAndAdd "" set
+type Cell = int * int
+[<JavaScript>]
+type Neighborhood = Set<Cell>
+[<JavaScript>]
+type Neighbors = Set<Cell>
+[<JavaScript>]
+type Generation = Set<Cell>
 
 [<JavaScript>]
-let neighborhood (a:int,b:int) = 
-    let f = [   for i in -1..1 do
-                for j in -1..1 do
-                    yield a+i, b+j
-            ] |> Set.ofList
-//    Window.Self.Alert("Neighbors of: (" + a.ToString() + "," + b.ToString() + ") : " + stringifySet(f))
-    f
+type IsAlive = bool
+[<JavaScript>]
+type LiveNeighborCount = int
+[<JavaScript>]
+type CellState = Cell * IsAlive * LiveNeighborCount
 
 [<JavaScript>]
-let neighbors cell =
-    neighborhood cell |> Set.remove cell
-    (* // The following doesn't work either... seems even worse:
-    let setOfMe = Set.empty |> Set.add cell
-    neighborhood cell |> Set.difference setOfMe 
-    *)
+let neighborhood ((a,b):Cell) : Neighborhood = 
+    [   for i in -1..1 do
+        for j in -1..1 do
+            yield a+i, b+j
+    ] |> Set.ofList
 
 [<JavaScript>]
-let cellState liveCells cell =
-//    Window.Self.Alert("Cell is: " + (fst cell).ToString() + "," + (snd cell).ToString())
-    let neighboringCells = neighbors cell
-    let liveNeighborCount = neighboringCells |> Set.intersect liveCells  |> Set.count
-//    Window.Self.Alert("Live cells is: " + (stringifySet liveCells))
-//    Window.Self.Alert("Neighbors is: " + (stringifySet neighborsWithoutItself))
-//    Window.Self.Alert("Live neighbors is: " +  (stringifySet (Set.intersect liveCells neighborsWithoutItself))) 
-//    Window.Self.Alert("Live neighbor count is: " + liveNeighborCount.ToString())
-    let isCellAlive = Set.contains cell liveCells
-//    Window.Self.Alert("Live cells is: " + (stringifySet liveCells))
-//    Window.Self.Alert("Cell is: " + (fst cell).ToString() + "," + (snd cell).ToString())
-//    Window.Self.Alert("Is cell alive is: " + isCellAlive.ToString())
+let neighbors (cell:Cell) : Neighbors = neighborhood cell |> Set.remove cell
+
+[<JavaScript>]
+let cellState (liveCells:Generation) (cell:Cell) : CellState =
+    let liveNeighborCount = neighbors cell |> Set.intersect liveCells |> Set.count
+    let isCellAlive = liveCells |> Set.contains cell 
     (cell, isCellAlive, liveNeighborCount)
 
 [<JavaScript>]
-let survivalRules = function
-    | _, _,    3 -> true
-    | _, true, 2 -> true
-    | _          -> false
+let survives (cellState:CellState) : bool = 
+    match cellState with
+        | _, _,    3 -> true
+        | _, true, 2 -> true
+        | _          -> false
 
 [<JavaScript>]
-let nextGeneration livingCells : Set<int*int> = 
-    //Window.Self.Alert("Before: " + (stringifySet livingCells))
-    let newState = livingCells|> Set.map neighborhood 
-                              |> Set.unionMany 
-                              |> Set.map (cellState livingCells) 
-                              |> Set.filter survivalRules 
-                              |> Set.map (fun (a1,b1,c1) -> a1)
-    //Window.Self.Alert("After: " + (stringifySet newState))
-    newState
+let nextGeneration (livingCells:Generation) : Generation = 
+    livingCells |> Set.map neighborhood 
+                |> Set.unionMany 
+                |> Set.map (cellState livingCells) 
+                |> Set.filter survives 
+                |> Set.map (fun (cell,_,_) -> cell)

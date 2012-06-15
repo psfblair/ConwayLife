@@ -36,16 +36,16 @@ module LifeSite =
         let Initialize (elem: CanvasElement) : unit = ()
 
         [<JavaScript>]
-        let CANVAS_WIDTH = 800
+        let CANVAS_WIDTH = 1200
         [<JavaScript>]
-        let CANVAS_HEIGHT = 600
+        let CANVAS_HEIGHT = 650
         [<JavaScript>]
         let CELL_SIDE_PIXELS = 10
         [<JavaScript>]
         let mutable context = None
 
         [<JavaScript>]
-        let mutable initialState =  Set.empty
+        let mutable currentState =  Set.empty
 
         [<JavaScript>]
         let drawSmallCircleAtPoint (ctx: CanvasRenderingContext2D) (x,y) =
@@ -63,6 +63,8 @@ module LifeSite =
         let drawLife (ctx: CanvasRenderingContext2D) (gameState: Set<int*int>) =
             ctx.Save()
             ctx.ClearRect(0., 0., float(CANVAS_WIDTH), float(CANVAS_HEIGHT))
+            ctx.FillStyle <- "#8EE5EE"
+            ctx.FillRect(0., 0., float(CANVAS_WIDTH), float(CANVAS_HEIGHT))
             ctx.Save()
 
             ctx.StrokeStyle <- "black"
@@ -76,16 +78,12 @@ module LifeSite =
         let adjustInitArrayAndRedraw (evt:Dom.Event) =
             let event = evt :?> Dom.MouseEvent
             let x = (event.ClientX / CELL_SIDE_PIXELS) - 1  // For some reason we have crazy offsets here
-            let y = (event.ClientY / CELL_SIDE_PIXELS) - 11
-            if Set.contains (x,y) initialState then
-                initialState <- Set.remove (x,y) initialState
+            let y = (event.ClientY / CELL_SIDE_PIXELS) - 6
+            if Set.contains (x,y) currentState then
+                currentState <- Set.remove (x,y) currentState
             else 
-                initialState <- Set.add (x, y) initialState
-            drawLife (Option.get context) initialState 
-
-        [<JavaScript>]
-        let StarterFormlet () : Formlet<int> =
-            Controls.Button("Go")
+                currentState <- Set.add (x, y) currentState
+            drawLife (Option.get context) currentState 
 
         [<JavaScript>]
         let AnimatedCanvas width height caption =
@@ -97,54 +95,59 @@ module LifeSite =
             
             canvas.Width  <- width
             canvas.Height <- height
-            
+
             let ctx = canvas.GetContext "2d"
             ctx.Canvas.AddEventListener("click", adjustInitArrayAndRedraw, false)
 
             context <- Some(ctx)
             
-            drawLife ctx initialState
-            Div [ Width (string width); Attr.Style "float:left" ] -< [
+            drawLife ctx currentState
+            Div [ Width (string width); Attr.Style "float:left; clear:both" ] -< [
                 Div [ Attr.Style "float:center" ] -< [
                     element
-                    P [Align "center"] -< [
-                        I [Text <| "Life" ]
-                    ]
                 ]
             ]
 
         [<JavaScript>]
-        let rec generationLoop oldState  =
-            async {
-                do! Async.Sleep 500
-                //Window.Self.Alert("Before: " + (stringifySet oldState))
-                let newState = nextGeneration oldState
-               // Window.Self.Alert("After: " + (stringifySet newState))
-                do drawLife (Option.get context) newState
-                do! generationLoop newState
-            }
+        let mutable reset = false
 
         [<JavaScript>]
-        let startDrawing s =
-            Async.Start (generationLoop initialState)
-
-        (* // This doesn't work either:
+        let rec generationLoop () =
+            if reset then
+                async { return () }
+            else
+                async {
+                    do! Async.Sleep 500
+                    currentState <- nextGeneration currentState
+                    do  drawLife (Option.get context) currentState
+                    do! generationLoop ()
+                }
+  
         [<JavaScript>]
-        let rec generationLoop currentState () =
-            let newState = nextGeneration currentState
-            drawLife (Option.get context) newState
-            JavaScript.SetTimeout (generationLoop newState) 500 |> ignore
+        let startDrawing () =
+            reset <- false
+            Async.Start (generationLoop ())
 
         [<JavaScript>]
-        let startDrawing s = 
-            JavaScript.SetTimeout (generationLoop initialState) 500 |> ignore
-        *)
+        let stopDrawing () =
+            reset <- true
+
+        [<JavaScript>]
+        let stopDrawingAndReset () =
+            stopDrawing ()
+            currentState <- Set.empty
+            drawLife (Option.get context) currentState
 
         [<JavaScript>]
         let Main () =
-            Div [
-                Div [ StarterFormlet().Run (fun s -> startDrawing s) ]                                              
-                AnimatedCanvas CANVAS_WIDTH CANVAS_HEIGHT "1"
+            Span [ 
+                Span [Attr.Style "position:absolute; top:20px; left:425px"] -< [
+                        Input [Attr.Type "button"; Attr.Value "Go"] |>! OnClick (fun element eventArguments -> startDrawing()) 
+                        Input [Attr.Type "button"; Attr.Value "Stop"] |>! OnClick (fun element eventArguments -> stopDrawing()) 
+                        Input [Attr.Type "button"; Attr.Value "Reset"] |>! OnClick (fun element eventArguments -> stopDrawingAndReset()) 
+                        ]
+                P [Attr.Style "font-style:italic; position:absolute; top:30px; " ; Text "Click within the canvas to set/unset cells. To add/remove cells in a running game, stop the game first. Cells outside the canvas boundaries are still tracked." ]
+                AnimatedCanvas CANVAS_WIDTH CANVAS_HEIGHT "1" 
                 Div [Attr.Style "clear:both"]
             ]
 
@@ -156,7 +159,7 @@ module LifeSite =
             override this.Body = Canvas.Main () :> _
 
 
-    let Index = Skin.WithTemplate "Index page" <| fun ctx -> [  Div [new Client.CanvasViewer()] ]
+    let Index = Skin.WithTemplate "John Horton Conway's Game of Life" <| fun ctx -> [  Div [new Client.CanvasViewer()] ]
 
     let MySitelet = [ Sitelet.Content "/index" Action.Index Index ] |> Sitelet.Sum
     let MyActions = [ Action.Index ]
