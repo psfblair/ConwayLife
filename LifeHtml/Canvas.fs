@@ -1,7 +1,6 @@
 ﻿namespace LifeHtml
 open System
 
-
    module Canvas =
       open IntelliFactory.WebSharper  // For Inline, JavaScript attributes, dom events
       open IntelliFactory.WebSharper.Html
