@@ -24,7 +24,7 @@
   <PropertyGroup>
     <WebSharperSiteletsOfflineDirectory>$(MSBuildProjectDirectory)\bin\html</WebSharperSiteletsOfflineDirectory>
     <OutputType>Library</OutputType>
-    <Name>LifeHtmlSite</Name>
+    <Name>LifeWebsite</Name>
     <RootNamespace>$(Name)</RootNamespace>
     <AssemblyName>$(Name)</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
@@ -33,6 +33,10 @@
   <ItemGroup>
     <Content Include="extra.files" />
     <Compile Include="Life.fs" />
+    <Compile Include="Game.fs" />
+    <Compile Include="Canvas.fs" />
+    <Compile Include="WebsiteContent.fs" />
+    <Compile Include="WebsiteSkin.fs" />
     <Compile Include="Main.fs" />
     <Content Include="Main.html" />
   </ItemGroup>
