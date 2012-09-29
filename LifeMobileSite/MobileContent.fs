@@ -21,7 +21,7 @@
             let width = JQuery.Of("body").Width()
             let height = JQuery.Of("#page").Height() - (headerHeight * 2) // Assume header and footer are same height
             let xOffset = 0
-            let yOffset = headerHeight / CELL_SIDE_PIXELS
+            let yOffset = (headerHeight / CELL_SIDE_PIXELS) + 1
             let board = new LifeBoard(width, height, CELL_SIDE_PIXELS, xOffset, yOffset)
             Span [ 
                board.Canvas()
