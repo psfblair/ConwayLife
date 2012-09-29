@@ -1,0 +1,14 @@
+This project is for experimenting with web- and mobile
+development in F#.
+
+The application is John Horton Conway's Game of Life.
+Click on the screen to toggle cells to alive or dead.
+Press the buttons on the screen to control the game.
+
+The basic Life algorithm is contained in LifeCore. 
+The basic HTML canvas for rendering Life to HTML is
+in LifeHtml. These projects are then used by LifeWebsite
+(a static page where Life runs via Javascript in the
+browser) and LifeMobileSite (similar, but using 
+JQuery Mobile and formatted for mobile browsers).
+
