@@ -27,9 +27,9 @@
             let board = new LifeBoard(CANVAS_WIDTH, CANVAS_HEIGHT, CELL_SIDE_PIXELS, X_OFFSET, Y_OFFSET)
             Span [ 
                Span [Attr.Style "position:absolute; top:20px; left:425px"] -< [
-                     Input [Attr.Type "button"; Attr.Value "Go"] |>! OnClick (fun element eventArguments -> startDrawing (board.DrawLife)) 
-                     Input [Attr.Type "button"; Attr.Value "Stop"] |>! OnClick (fun element eventArguments -> stopDrawing ()) 
-                     Input [Attr.Type "button"; Attr.Value "Reset"] |>! OnClick (fun element eventArguments -> stopDrawingAndReset board.DrawLife)
+                     Input [Attr.Type "button"; Attr.Value "Go"] |>! OnClick (fun element eventArguments -> Go |> GameEvents.Trigger) 
+                     Input [Attr.Type "button"; Attr.Value "Stop"] |>! OnClick (fun element eventArguments -> Stop |> GameEvents.Trigger) 
+                     Input [Attr.Type "button"; Attr.Value "Reset"] |>! OnClick (fun element eventArguments -> Reset |> GameEvents.Trigger)
                      ]
                P [Attr.Style "font-style:italic; position:absolute; top:30px; " ; Text "Click within the canvas to set/unset cells. To add/remove cells in a running game, stop the game first. Cells outside the canvas boundaries are still tracked." ]
                board.Canvas()

@@ -45,7 +45,13 @@ open System
          let x = (event.ClientX / cellSide) - cellXOffset
          let y = (event.ClientY / cellSide) - cellYOffset
          toggleCellAndRedraw (x,y) (drawLife context width height cellSide)
+
+      [<JavaScript>]
+      type GameEvent = | Go | Stop | Reset
      
+      [<JavaScript>]
+      let GameEvents = new Event<GameEvent>()
+
       [<JavaScript>]
       type LifeBoard (width : int,  height : int, cellSide : int, cellXOffset : int, cellYOffset : int) = 
 
@@ -65,11 +71,13 @@ open System
           
             drawLife context width height cellSide !currentState
 
+            GameEvents.Publish.Add (function | Go -> startDrawing (drawLife context width height cellSide) 
+                                             | Stop -> stopDrawing ()
+                                             | Reset -> stopDrawingAndReset (drawLife context width height cellSide) )
+
          member this.Canvas () = 
             Div [ Width (string width); Attr.Style "float:left; clear:both" ] -< [
                   Div [ Attr.Style "float:center" ] -< [
                      element
                   ]
             ]
-
-         member this.DrawLife = drawLife context width height cellSide

@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
+    <Platform Condition="'$(Platform)' == ''">AnyCPU</Platform>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4e9f688e-e589-449c-9742-27826cc51319}</ProjectGuid>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <Tailcalls>false</Tailcalls>
+    <OutputPath>bin/Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <Tailcalls>true</Tailcalls>
+    <OutputPath>bin/Release</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup>
+    <WebSharperSiteletsOfflineDirectory>$(MSBuildProjectDirectory)\bin\html</WebSharperSiteletsOfflineDirectory>
+    <OutputType>Library</OutputType>
+    <Name>LifeMobileSite</Name>
+    <RootNamespace>$(Name)</RootNamespace>
+    <AssemblyName>$(Name)</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <WarningLevel>3</WarningLevel>
+  </PropertyGroup>
+  <Import Project="WebSharper.targets" Condition="Exists('WebSharper.targets')" />
+  <Import Project="$(WEBSHARPER_HOME)/IntelliFactory.WebSharper.Sitelets.targets" />
+  <ItemGroup>
+    <Compile Include="MobileContent.fs" />
+    <Compile Include="MobileSetupPageSkin.fs" />
+    <Compile Include="Main.fs" />
+    <None Include="SetupPage.html" />
+    <None Include="RunPage.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="IntelliFactory.WebSharper.JQuery.Mobile">
+      <HintPath>C:\Program Files\IntelliFactory\WebSharper\Extensions\WebSharper Extensions for jQuery Mobile\IntelliFactory.WebSharper.JQuery.Mobile.dll</HintPath>
+    </Reference>
+    <Reference Include="mscorlib" />
+    <Reference Include="FSharp.Core" />
+    <Reference Include="System" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Web" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LifeCore\LifeCore.fsproj">
+      <Name>LifeCore</Name>
+      <Project>{6c77c0f0-7104-48a7-8c0b-1d90f01ce815}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\LifeHtml\LifeHtml.fsproj">
+      <Name>LifeHtml</Name>
+      <Project>{d0a6b19c-7585-478b-83bd-b55eb11927b6}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+  </ItemGroup>
+</Project>
