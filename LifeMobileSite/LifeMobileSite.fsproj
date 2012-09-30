@@ -31,7 +31,7 @@
     <WarningLevel>3</WarningLevel>
   </PropertyGroup>
   <Import Project="WebSharper.targets" Condition="Exists('WebSharper.targets')" />
-  <Import Project="..\packages\IntelliFactory.WebSharper.Sitelets.targets" />
+  <Import Project="..\packages\WebSharper.2.4.85.235\IntelliFactory.WebSharper.Sitelets.targets" />
   <ItemGroup>
     <Compile Include="MobileContent.fs" />
     <Compile Include="MobileSetupPageSkin.fs" />
