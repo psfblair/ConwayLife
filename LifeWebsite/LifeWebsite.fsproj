@@ -30,6 +30,7 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <WarningLevel>3</WarningLevel>
   </PropertyGroup>
+  <Import Project="WebSharper.targets" Condition="Exists('WebSharper.targets')" />
   <Import Project="..\packages\WebSharper.2.4.85.235\IntelliFactory.WebSharper.Sitelets.targets" />
   <ItemGroup>
     <Content Include="extra.files" />
