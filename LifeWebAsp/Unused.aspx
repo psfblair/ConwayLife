@@ -3,10 +3,12 @@
 	  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head runat="server">
-    <title>WebSharper Application</title>
+    <title>John Horton Conway's Game of Life</title>
     <WebSharper:ScriptManager runat="server" />
   </head>
   <body>
-    <ws:MyControl runat="server"/>
+      <div>
+        <ws:WebsiteContent.CanvasFrame runat="server"/>
+      </div>
   </body>
 </html>
