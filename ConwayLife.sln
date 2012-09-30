@@ -40,7 +40,6 @@ Global
 		{4E9F688E-E589-449C-9742-27826CC51319}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E9F688E-E589-449C-9742-27826CC51319}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4E9F688E-E589-449C-9742-27826CC51319}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{4E9F688E-E589-449C-9742-27826CC51319}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{4E9F688E-E589-449C-9742-27826CC51319}.Release|x86.ActiveCfg = Release|Any CPU
 		{4E9F688E-E589-449C-9742-27826CC51319}.Release|x86.Build.0 = Release|Any CPU
 		{6C77C0F0-7104-48A7-8C0B-1D90F01CE815}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
