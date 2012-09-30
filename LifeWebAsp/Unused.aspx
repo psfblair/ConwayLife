@@ -8,7 +8,7 @@
   </head>
   <body>
       <div>
-        <ws:WebsiteContent.CanvasFrame runat="server"/>
+        <ws:CanvasFrame runat="server"/>
       </div>
   </body>
 </html>
