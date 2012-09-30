@@ -1,4 +1,12 @@
 */bin/
 */obj/
 *.zip
-packages/
+packages/*.dll
+packages/*.jar
+packages/*.xml
+packages/*.rtf
+packages/*.exe
+packages/*.exe.config
+packages/*.nupkg
+packages/*.config
+packages/*/
