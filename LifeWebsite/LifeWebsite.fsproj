@@ -30,12 +30,15 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <WarningLevel>3</WarningLevel>
   </PropertyGroup>
+  <Import Project="$(WEBSHARPER_HOME)/IntelliFactory.WebSharper.Sitelets.targets" />
   <ItemGroup>
     <Content Include="extra.files" />
     <Compile Include="WebsiteContent.fs" />
     <Compile Include="WebsiteSkin.fs" />
     <Compile Include="Main.fs" />
     <Content Include="Main.html" />
+    <None Include="WebSharper.targets" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
@@ -43,8 +46,6 @@
     <Reference Include="System" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Web" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\LifeCore\LifeCore.fsproj">
       <Name>LifeCore</Name>
       <Project>{6c77c0f0-7104-48a7-8c0b-1d90f01ce815}</Project>
@@ -56,5 +57,4 @@
       <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="$(WEBSHARPER_HOME)/IntelliFactory.WebSharper.Sitelets.targets" />
 </Project>

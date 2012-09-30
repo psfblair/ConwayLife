@@ -5,7 +5,6 @@
       open IntelliFactory.WebSharper.Html
       open IntelliFactory.WebSharper.Html5
       open IntelliFactory.WebSharper.JQuery
-      open IntelliFactory.WebSharper.JQuery.Mobile
       open LifeHtml.Canvas
       open Life.Game
 
@@ -17,14 +16,15 @@
 
          [<JavaScript>]
          override this.Body = 
-            let headerHeight = JQuery.Of("#header").Height()
-            let width = JQuery.Of("body").Width()
-            let height = JQuery.Of("#page").Height() - (headerHeight * 2) // Assume header and footer are same height
+            
+            let headerHeight = JQuery.JQuery.Of("#header").Height()
+            let width = JQuery.JQuery.Of("body").Width()
+            let height = JQuery.JQuery.Of("#page").Height() - (headerHeight * 2) // Assume header and footer are same height
             let xOffset = 0
             let yOffset = (headerHeight / CELL_SIDE_PIXELS) + 1
-            let board = new LifeBoard(width, height, CELL_SIDE_PIXELS, xOffset, yOffset)
+            LifeHtml.Canvas.initialize width height CELL_SIDE_PIXELS xOffset yOffset
             Span [ 
-               board.Canvas()
+               LifeHtml.Canvas.nodes()
                Div [Attr.Style "clear:both"]
                ] :> IPagelet
 
@@ -33,7 +33,8 @@
 
          [<JavaScript>]
          override this.Body = 
-            JQuery.Mobile.Mobile.Use()
+            JQuery.Mobile.JQuery.UseJQueryMobile
+
             Div [HTML5.Attr.Data "role" "controlgroup" ; 
                  HTML5.Attr.Data "type" "horizontal"; 
                  HTML5.Attr.Data "mini" "true"
@@ -47,5 +48,5 @@
                   A [HTML5.Attr.Data "role" "button"; HTML5.Attr.Data "icon" "refresh"] 
                      -< [ Text "Reset" ] 
                      |>! OnClick (fun element eventArguments -> Reset |> GameEvents.Trigger)
-                  ] |>! OnAfterRender (fun x -> JQuery.Of(x.Body).Trigger("create") |> ignore)
+                  ] |>! OnAfterRender (fun x -> JQuery.JQuery.Of(x.Body).Trigger("create") |> ignore)
             :> IPagelet

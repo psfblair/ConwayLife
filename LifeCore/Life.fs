@@ -3,20 +3,13 @@
 module Core =
    open IntelliFactory.WebSharper
 
-   [<JavaScript>]
    type Cell = int * int
-   [<JavaScript>]
    type Neighborhood = Set<Cell>
-   [<JavaScript>]
    type Neighbors = Set<Cell>
-   [<JavaScript>]
    type Generation = Set<Cell>
 
-   [<JavaScript>]
    type IsAlive = bool
-   [<JavaScript>]
    type LiveNeighborCount = int
-   [<JavaScript>]
    type CellState = Cell * IsAlive * LiveNeighborCount
 
    [<JavaScript>]

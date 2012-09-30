@@ -38,10 +38,14 @@
     <Compile Include="Main.fs" />
     <None Include="SetupPage.html" />
     <None Include="RunPage.html" />
+    <None Include="WebSharper.targets" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="IntelliFactory.WebSharper.JQuery" />
     <Reference Include="IntelliFactory.WebSharper.JQuery.Mobile">
-      <HintPath>C:\Program Files\IntelliFactory\WebSharper\Extensions\WebSharper Extensions for jQuery Mobile\IntelliFactory.WebSharper.JQuery.Mobile.dll</HintPath>
+      <HintPath>..\packages\WebSharper.JQueryMobile.2.4.54.144\lib\IntelliFactory.WebSharper.JQuery.Mobile.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="FSharp.Core" />

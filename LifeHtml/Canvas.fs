@@ -10,7 +10,7 @@ open System
       // Since IE does not support canvas natively. Initialization of the 
       // canvas element is done through the excanvas.js library.
       [<Inline "G_vmlCanvasManager.initElement($elem)">]
-      let Initialize (elem: CanvasElement) : unit = ()
+      let initializeForIE6 (elem: CanvasElement) : unit = ()
 
       [<JavaScript>]
       let drawSmallCircleAtPoint (ctx:CanvasRenderingContext2D) cellSide (x,y) =
@@ -46,38 +46,41 @@ open System
          let y = (event.ClientY / cellSide) - cellYOffset
          toggleCellAndRedraw (x,y) (drawLife context width height cellSide)
 
-      [<JavaScript>]
       type GameEvent = | Go | Stop | Reset
      
       [<JavaScript>]
       let GameEvents = new Event<GameEvent>()
+ 
+      [<JavaScript>]
+      let element = HTML5.Tags.Canvas []
 
       [<JavaScript>]
-      type LifeBoard (width : int,  height : int, cellSide : int, cellXOffset : int, cellYOffset : int) = 
+      let canvas  = As<CanvasElement> element.Dom
 
-         let element = HTML5.Tags.Canvas []
-         let canvas  = As<CanvasElement> element.Dom
-         let context = canvas.GetContext "2d"
+      [<JavaScript>]
+      let context = canvas.GetContext "2d"
 
-         do 
-            // Conditional initialization for the case of IE.
-            if (JavaScript.Get "getContext" canvas = JavaScript.Undefined) then
-                  Initialize canvas
+      [<JavaScript>]
+      let initialize (width:int) (height:int) (cellSide:int) (cellXOffset:int) (cellYOffset:int) = 
+         // Conditional initialization for the case of IE.
+         if (JavaScript.Get "getContext" canvas = JavaScript.Undefined) then
+               initializeForIE6 canvas
             
-            canvas.Width  <- width
-            canvas.Height <- height
+         canvas.Width  <- width
+         canvas.Height <- height
 
-            context.Canvas.AddEventListener("click", (adjustInitArrayAndRedraw context width height cellSide cellXOffset cellYOffset), false)
+         context.Canvas.AddEventListener("click", (adjustInitArrayAndRedraw context width height cellSide cellXOffset cellYOffset), false)
           
-            drawLife context width height cellSide !currentState
+         drawLife context width height cellSide !currentState
 
-            GameEvents.Publish.Add (function | Go -> startDrawing (drawLife context width height cellSide) 
-                                             | Stop -> stopDrawing ()
-                                             | Reset -> stopDrawingAndReset (drawLife context width height cellSide) )
+         GameEvents.Publish.Add (function | Go -> startDrawing (drawLife context width height cellSide) 
+                                          | Stop -> stopDrawing ()
+                                          | Reset -> stopDrawingAndReset (drawLife context width height cellSide) )
 
-         member this.Canvas () = 
-            Div [ Width (string width); Attr.Style "float:left; clear:both" ] -< [
-                  Div [ Attr.Style "float:center" ] -< [
-                     element
-                  ]
-            ]
+      [<JavaScript>]
+      let nodes () = 
+         Div [ Width (string canvas.Width); Attr.Style "float:left; clear:both" ] -< [
+               Div [ Attr.Style "float:center" ] -< [
+                  element
+               ]
+         ]
