@@ -40,7 +40,6 @@
     <None Include="WebSharper.targets" />
     <None Include="packages.config" />
     <Compile Include="Main.fs" />
-    <None Include="Main.html" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LifeWebsite\LifeWebsite.fsproj">
