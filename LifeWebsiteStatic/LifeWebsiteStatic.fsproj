@@ -34,7 +34,8 @@
     <WarningLevel>3</WarningLevel>
   </PropertyGroup>
   <Import Project="WebSharper.targets" Condition="Exists('WebSharper.targets')" />
-  <Import Project="..\packages\WebSharper.2.4.85.235\IntelliFactory.WebSharper.Sitelets.targets" />
+  <Import Project="$(WEBSHARPER_HOME)/IntelliFactory.WebSharper.Sitelets.targets" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <ItemGroup>
     <Content Include="extra.files" />
     <None Include="WebSharper.targets" />
@@ -55,5 +56,4 @@
     <Reference Include="System.Numerics" />
     <Reference Include="System.Web" />
   </ItemGroup>
-  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
 </Project>

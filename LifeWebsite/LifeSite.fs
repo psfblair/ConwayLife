@@ -17,5 +17,8 @@ module LifeSite =
 
 type LifeWebsite() =
    interface IWebsite<LifeSite.Action> with
-      member this.Sitelet = [ Sitelet.Content "/index" LifeSite.Action.Index LifeSite.Page ] |> Sitelet.Sum
+      member this.Sitelet = Sitelet.Content "/" LifeSite.Action.Index LifeSite.Page
       member this.Actions = [ LifeSite.Action.Index ]
+
+[<assembly: WebsiteAttribute(typeof<LifeWebsite>)>]
+do ()
