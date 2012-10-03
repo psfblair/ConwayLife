@@ -49,7 +49,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Content Include="*.aspx" />
     <Content Include="Scripts\*.js" />
     <Content Include="Content\**\*.*" />
     <Content Include="Themes\**\*.*" />

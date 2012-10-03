@@ -1,6 +1,7 @@
 */bin/
 */obj/
 *.zip
+LifeWebAsp/LifeWebAsp.csproj.user
 packages/*.dll
 packages/*.jar
 packages/*.xml
