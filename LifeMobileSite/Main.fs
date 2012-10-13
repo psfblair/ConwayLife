@@ -13,7 +13,7 @@ module LifeSite =
          | Index
 
    let Page =
-      Skin.WithContent "Conway's Game of Life" 
+      Skin.WithGameContent "Conway's Game of Life" 
                   <| fun ctx -> [ Div [ new MobileContent.BodyControl() ] ]
                   <| fun ctx -> [ Div [ new MobileContent.FooterControl() ] ]
 

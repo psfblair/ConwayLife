@@ -36,15 +36,20 @@
   <Import Project="WebSharper.targets" Condition="Exists('WebSharper.targets')" />
   <Import Project="..\packages\WebSharper.2.4.85.235\IntelliFactory.WebSharper.Sitelets.targets" />
   <ItemGroup>
-    <Compile Include="MobileSetupPageSkin.fs" />
+    <Compile Include="MobileGamePageSkin.fs" />
     <Compile Include="MobileContent.fs" />
     <Compile Include="Main.fs" />
-    <None Include="SetupPage.html" />
-    <None Include="RunPage.html" />
+    <Content Include="GamePage.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="WebSharper.targets" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="IntelliFactory.WebSharper.JQuery.Mobile">
+      <HintPath>..\packages\WebSharper.JQueryMobile.2.4.54.144\lib\IntelliFactory.WebSharper.JQuery.Mobile.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.Numerics" />
@@ -63,4 +68,7 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>COPY "$(TargetDir)GamePage.html" "$(ProjectDir)..\LifeWebAsp\bin"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

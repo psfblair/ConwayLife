@@ -45,6 +45,11 @@
       <Project>{ddf9272f-697b-47d8-8f0d-531fc81bf09f}</Project>
       <Private>True</Private>
     </ProjectReference>
+    <ProjectReference Include="..\LifeMobileSite\LifeMobileSite.fsproj">
+      <Name>LifeMobileSite</Name>
+      <Project>{4e9f688e-e589-449c-9742-27826cc51319}</Project>
+      <Private>True</Private>
+    </ProjectReference>
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.Numerics" />
