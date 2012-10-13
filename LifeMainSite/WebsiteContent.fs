@@ -1,4 +1,4 @@
-﻿namespace LifeWebsite.WebsiteContent
+﻿namespace LifeMainSite.WebsiteContent
 
 open IntelliFactory.WebSharper  // For JavaScript attribute (also Web.Control but this is ambiguous)
 open IntelliFactory.Html.Tags

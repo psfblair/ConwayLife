@@ -35,33 +35,20 @@
   <Import Project="WebSharper.targets" Condition="Exists('WebSharper.targets')" />
   <Import Project="$(WEBSHARPER_HOME)/IntelliFactory.WebSharper.targets" />
   <ItemGroup>
-    <Compile Include="WebsiteContent.fs" />
-    <Compile Include="WebsiteSkin.fs" />
     <Compile Include="LifeSite.fs" />
     <None Include="WebSharper.targets" />
     <None Include="packages.config" />
-    <Content Include="Main.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="FSharp.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <ProjectReference Include="..\LifeMainSite\LifeMainSite.fsproj">
+      <Name>LifeMainSite</Name>
+      <Project>{ddf9272f-697b-47d8-8f0d-531fc81bf09f}</Project>
       <Private>True</Private>
-    </Reference>
+    </ProjectReference>
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Web" />
-    <ProjectReference Include="..\LifeCore\LifeCore.fsproj">
-      <Name>LifeCore</Name>
-      <Project>{6c77c0f0-7104-48a7-8c0b-1d90f01ce815}</Project>
-      <Private>True</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\LifeHtml\LifeHtml.fsproj">
-      <Name>LifeHtml</Name>
-      <Project>{d0a6b19c-7585-478b-83bd-b55eb11927b6}</Project>
-      <Private>True</Private>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
 </Project>

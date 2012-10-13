@@ -1,4 +1,4 @@
-﻿namespace LifeWebsite
+﻿namespace LifeMainSite
 
 open System.IO
 open System.Web
