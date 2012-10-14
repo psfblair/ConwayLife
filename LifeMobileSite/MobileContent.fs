@@ -49,4 +49,5 @@ module MobileContent =
                         -< [ Text "Reset" ] 
                         |>! OnClick (fun element eventArguments -> Reset |> GameEvents.Trigger)
                     ] |>! OnAfterRender (fun x -> JQuery.JQuery.Of(x.Body).Trigger("create") |> ignore)
+                      |>! OnAfterRender (fun x -> JQuery.Mobile.JQuery.Mobile.ChangePage(".") )
             :> IPagelet

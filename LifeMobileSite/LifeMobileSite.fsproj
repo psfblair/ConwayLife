@@ -25,7 +25,6 @@
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <PropertyGroup>
-    <WebSharperSiteletsOfflineDirectory>$(MSBuildProjectDirectory)\bin\html</WebSharperSiteletsOfflineDirectory>
     <OutputType>Library</OutputType>
     <Name>LifeMobileSite</Name>
     <RootNamespace>$(Name)</RootNamespace>
@@ -38,7 +37,6 @@
   <ItemGroup>
     <Compile Include="MobileGamePageSkin.fs" />
     <Compile Include="MobileContent.fs" />
-    <Compile Include="Main.fs" />
     <Content Include="GamePage.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
