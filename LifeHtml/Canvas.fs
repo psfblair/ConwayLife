@@ -12,15 +12,26 @@ open System
       [<Inline "G_vmlCanvasManager.initElement($elem)">]
       let initializeForIE6 (elem: CanvasElement) : unit = ()
 
+      type CanvasCoordinatePair = float * float
+
       [<JavaScript>]
-      let drawSmallCircleAtPoint (ctx:CanvasRenderingContext2D) cellSide (x,y) =
-         let radius = ((float cellSide) - 2.0) / 2.0
+      let transformCellCoordinatesToCanvasCoordinates cellSideInPixels cell : CanvasCoordinatePair = 
+         let centerX = ((fst cell) * cellSideInPixels) + (cellSideInPixels / 2) |> float
+         let centerY = ((snd cell) * cellSideInPixels) + (cellSideInPixels / 2) |> float
+         (centerX, centerY)
+
+      [<JavaScript>]
+      let cellIsWithinViewableCanvas width height canvasCoordinatePair =
+        (fst canvasCoordinatePair) > 0. && (fst canvasCoordinatePair) < (float width) &&
+            (snd canvasCoordinatePair) > 0. && (snd canvasCoordinatePair) < (float height)
+
+      [<JavaScript>]
+      let drawSmallCircleAtPoint (ctx:CanvasRenderingContext2D) cellSideInPixels canvasCoordinatePair =
+         let radius = ((float cellSideInPixels) - 2.0) / 2.0
          let startAngle = 0.0
          let endAngle = Math.PI * 2.
-         let centerX = float ((x * cellSide) + (cellSide / 2)) 
-         let centerY = float ((y * cellSide) + (cellSide / 2)) 
          ctx.BeginPath()
-         ctx.Arc(centerX, centerY, radius, startAngle, endAngle, true)
+         ctx.Arc((fst canvasCoordinatePair), (snd canvasCoordinatePair), radius, startAngle, endAngle, true)
          ctx.ClosePath()
          ctx.Stroke()
 
@@ -36,7 +47,9 @@ open System
          context.FillStyle <- "black"
          context.LineWidth <- 1.
 
-         Set.iter (drawSmallCircleAtPoint context cellSide) gameState      
+         gameState |> Set.map (transformCellCoordinatesToCanvasCoordinates cellSide)
+                   |> Set.filter (cellIsWithinViewableCanvas width height) 
+                   |> Set.iter (drawSmallCircleAtPoint context cellSide)      
          context.Save()
 
       [<JavaScript>]
