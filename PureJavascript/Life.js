@@ -21,6 +21,32 @@ var Life = (function() {
 				return this.cell.toKey() + '_' + this.isCellAlive + '_' + this.liveNeighborCount;
 		};
 
+		module.nextGeneration = function(setOfLivingCells) {
+				var cellsInPlay = new Set();
+				setOfLivingCells.foreach( function(cell){
+						var cellNeighborhood = neighborhood(cell);
+						cellNeighborhood.foreach( function(neighboringCell){
+								cellsInPlay.add(neighboringCell);
+						});
+				});
+
+				var stateOfCellsInPlay = new Set();
+				cellsInPlay.foreach( function(cellInPlay) {
+						var stateOfCell = cellState(setOfLivingCells, cellInPlay);
+						stateOfCellsInPlay.add(stateOfCell);
+				});
+
+				var survivingCells = new Set();
+				stateOfCellsInPlay.foreach( function(state) {
+						if (survives(state)) {
+								var survivingCell = state.cell;
+								survivingCells.add(survivingCell);
+						}
+				});
+
+				return survivingCells;
+		};
+
 		function neighborhood (cell) {
 				var x = cell.x;
 				var y = cell.y;
@@ -57,32 +83,6 @@ var Life = (function() {
 						return false;
 				}
 		}
-
-		module.nextGeneration = function(setOfLivingCells) {
-				var cellsInPlay = new Set();
-				setOfLivingCells.foreach( function(cell){
-						var cellNeighborhood = neighborhood(cell);
-						cellNeighborhood.foreach( function(neighboringCell){
-								cellsInPlay.add(neighboringCell);
-						});
-				});
-
-				var stateOfCellsInPlay = new Set();
-				cellsInPlay.foreach( function(cellInPlay) {
-						var stateOfCell = cellState(setOfLivingCells, cellInPlay);
-						stateOfCellsInPlay.add(stateOfCell);
-				});
-
-				var survivingCells = new Set();
-				stateOfCellsInPlay.foreach( function(state) {
-						if (survives(state)) {
-								var survivingCell = state.cell;
-								survivingCells.add(survivingCell);
-						}
-				});
-
-				return survivingCells;
-		};
 
 		return module;
 })();

@@ -1,13 +1,5 @@
 var Set = function() {
 		this.set = {};
-}
-
-Set.prototype.asString = function() {
-		var str = "";
-		for(var key in this.set){
-				str += "[" + key + " , " + this.set[key] + "]";
-		}
-		return str;
 };
 
 Set.prototype.add = function(item) {
@@ -45,4 +37,12 @@ Set.prototype.intersection = function(set2) {
 				}
 		}
 		return intersection;
+};
+
+Set.prototype.asString = function() {
+		var str = "";
+		for(var key in this.set){
+				str += "[" + key + " , " + this.set[key] + "]";
+		}
+		return str;
 };

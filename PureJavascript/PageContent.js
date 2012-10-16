@@ -8,12 +8,18 @@ var PageContent = (function()
 		var X_OFFSET = 1;
 		var Y_OFFSET = 6;
 
-		function createButton(name, handler) {
-				var theButton = document.createElement('input');
-				theButton.setAttribute('type', 'button');
-				theButton.setAttribute('value', name);
-				theButton.addEventListener('click', handler, false);
-				return theButton;
+		module.insertNodesIntoPage = function() {
+				var titleTagElements = document.getElementsByTagName("title");
+				titleTagElements[0].innerHTML = title();
+				var pageTitleElement = document.getElementById("title");
+				pageTitleElement.innerHTML = title();
+				var bodyWrapper = document.getElementById("data-body");
+				bodyWrapper.innerHTML = "";
+				bodyWrapper.appendChild(body());
+		};
+
+		function title() {
+				return "John Horton Conway's Game of Life";
 		}
 
 		function body() {
@@ -31,7 +37,9 @@ var PageContent = (function()
 				innerSpan.appendChild(stopButton);
 				innerSpan.appendChild(resetButton);
 
-				var instructions = document.createTextNode("Click within the canvas to set/unset cells. To add/remove cells in a running game, stop the game first. Cells outside the canvas boundaries are still tracked.");
+				var instructions = document.createTextNode("Click within the canvas to set/unset cells. " + 
+																									 "To add/remove cells in a running game, stop the game first. " +
+																									 "Cells outside the canvas boundaries are still tracked.");
 				var instructionsParagraph = document.createElement('p');
 				instructionsParagraph.setAttribute('style', 'font-style:italic; position:absolute; top:30px;');
 				instructionsParagraph.appendChild(instructions);
@@ -47,19 +55,13 @@ var PageContent = (function()
 				return outerSpan;
 		}
 
-		function title() {
-				return "John Horton Conway's Game of Life";
+		function createButton(name, handler) {
+				var theButton = document.createElement('input');
+				theButton.setAttribute('type', 'button');
+				theButton.setAttribute('value', name);
+				theButton.addEventListener('click', handler, false);
+				return theButton;
 		}
-
-		module.insertNodesIntoPage = function() {
-				var titleTagElements = document.getElementsByTagName("title");
-				titleTagElements[0].innerHTML = title();
-				var pageTitleElement = document.getElementById("title");
-				pageTitleElement.innerHTML = title();
-				var bodyWrapper = document.getElementById("data-body");
-				bodyWrapper.innerHTML = "";
-				bodyWrapper.appendChild(body());
-		};
 
 		return module;
 })();
