@@ -3,15 +3,15 @@ var Game = (function()
 		var module = {};		
 		module.currentState = new Set();
 
-		var reset = false;
+		var stopped = false;
 
 		module.startDrawing = function(drawFunction) {
-				reset = false;		
+				stopped = false;		
 				generationLoop(drawFunction);
 		};
 
 		module.stopDrawing = function() {
-				reset = true;
+				stopped = true;
 		};
 
 		module.stopDrawingAndReset = function(drawFunction) {
@@ -26,7 +26,7 @@ var Game = (function()
 		};
 
 		function generationLoop(drawFunction) {
-				if(reset) {
+				if(stopped) {
 						return;
 				} else {
 						setTimeout(function() {
