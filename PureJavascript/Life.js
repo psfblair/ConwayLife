@@ -1,4 +1,3 @@
-
 var Life = (function() {
 		var module = {};
 
@@ -30,17 +29,11 @@ var Life = (function() {
 						});
 				});
 
-				var stateOfCellsInPlay = new Set();
+				var survivingCells = new Set();
 				cellsInPlay.foreach( function(cellInPlay) {
 						var stateOfCell = cellState(setOfLivingCells, cellInPlay);
-						stateOfCellsInPlay.add(stateOfCell);
-				});
-
-				var survivingCells = new Set();
-				stateOfCellsInPlay.foreach( function(state) {
-						if (survives(state)) {
-								var survivingCell = state.cell;
-								survivingCells.add(survivingCell);
+						if (survives(stateOfCell)) {
+								survivingCells.add(cellInPlay);
 						}
 				});
 
