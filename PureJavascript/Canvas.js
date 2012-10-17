@@ -20,7 +20,9 @@ var Canvas = (function() {
 						modifyInitialStateAndRedraw(context, width, height, cellSide, cellXOffset, cellYOffset, evt);
 				};
 				context.canvas.addEventListener('click', clickReporter, false);
+
 				drawLife(context, width, height, cellSide, Game.currentState);
+
 				module.Go = function(evt) {
 						Game.startDrawing(function(state) { drawLife(context, width, height, cellSide, state);	});
 				};
