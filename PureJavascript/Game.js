@@ -5,46 +5,6 @@ var Game = (function()
 
 		var reset = false;
 
-		function isAlive(cell) {
-				return module.currentState.contains(cell);
-		}
-
-		function removeCell(cell) {
-				module.currentState.remove(cell);
-		}
-
-		function addCell(cell) {
-				module.currentState.add(cell);
-		}
-
-		function toggleCell(cell) {
-				if(isAlive(cell)) {
-						removeCell(cell);
-				} else {
-						addCell(cell);
-				}
-		}
-
-		function newGeneration() {
-				module.currentState = Life.nextGeneration(module.currentState);
-		}
-
-		function resetAllCells() {
-				module.currentState = new Set();
-		}
-
-		function generationLoop(drawFunction) {
-				if(reset) {
-						return;
-				} else {
-						setTimeout(function() {
-													 newGeneration();
-													 drawFunction(module.currentState);
-													 generationLoop(drawFunction);
-											 }, 500);
-				}
-		}
-
 		module.startDrawing = function(drawFunction) {
 				reset = false;		
 				generationLoop(drawFunction);
@@ -64,6 +24,46 @@ var Game = (function()
 				toggleCell(cell);
 				drawFunction(module.currentState);
 		};
+
+		function generationLoop(drawFunction) {
+				if(reset) {
+						return;
+				} else {
+						setTimeout(function() {
+													 newGeneration();
+													 drawFunction(module.currentState);
+													 generationLoop(drawFunction);
+											 }, 500);
+				}
+		}
+
+		function newGeneration() {
+				module.currentState = Life.nextGeneration(module.currentState);
+		}
+
+		function resetAllCells() {
+				module.currentState = new Set();
+		}
+
+		function toggleCell(cell) {
+				if(isAlive(cell)) {
+						removeCell(cell);
+				} else {
+						addCell(cell);
+				}
+		}
+
+		function isAlive(cell) {
+				return module.currentState.contains(cell);
+		}
+
+		function removeCell(cell) {
+				module.currentState.remove(cell);
+		}
+
+		function addCell(cell) {
+				module.currentState.add(cell);
+		}
 
 		return module;
 })();
