@@ -1,48 +1,48 @@
 var Set = function() {
-		this.set = {};
-};
-
-Set.prototype.add = function(item) {
-		this.set[item.toKey()] = item;
-};
-
-Set.prototype.remove = function(item) {
-		delete this.set[item.toKey()];
-};
-
-Set.prototype.contains = function(item) {
-		return this.set.hasOwnProperty(item.toKey());
-};
-
-Set.prototype.count = function() {
+		var set = {};
 		var count = 0;
-		for(var key in this.set) {
+
+
+		this.add = function(item) {
+				set[item.toKey()] = item;
 				count++;
-		}
-		return count;
-};
+		};
 
-Set.prototype.foreach = function(func) {
-		for(var key in this.set){
-				func(this.set[key]);
-		}		
-};
+		this.remove = function(item) {
+				delete set[item.toKey()];
+				count--;
+		};
 
-Set.prototype.intersection = function(set2) {
-		var intersection = new Set();
-		for(var cellKey in this.set){
-				var cell = this.set[cellKey];
-				if(set2.contains(cell)) {							 
-						intersection.add(cell);
+		this.contains = function(item) {
+				return set.hasOwnProperty(item.toKey());
+		};
+
+		this.count = function() {
+				return count;
+		};
+
+		this.foreach = function(func) {
+				for(var key in set){
+						func(set[key]);
+				}		
+		};
+
+		this.intersection = function(set2) {
+				var result = new Set();
+				for(var key in set){
+						var value = set[key];
+						if(set2.contains(value)) {							 
+								result.add(value);
+						}
 				}
-		}
-		return intersection;
-};
+				return result;
+		};
 
-Set.prototype.asString = function() {
-		var str = "";
-		for(var key in this.set){
-				str += "[" + key + " , " + this.set[key] + "]";
-		}
-		return str;
+		this.toString = function() {
+				var str = "";
+				for(var key in set){
+						str += "[" + key + " , " + set[key] + "]";
+				}
+				return str;
+		};
 };
