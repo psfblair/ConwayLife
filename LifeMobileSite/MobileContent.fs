@@ -20,7 +20,7 @@ module MobileContent =
             let width = JQuery.JQuery.Of("body").Width()
             let height = JQuery.JQuery.Of("#page").Height() - (headerHeight * 2) // Assume header and footer are same height
             let canvas_x_Offset = 0
-            let canvas_y_Offset = (headerHeight / CELL_SIDE_PIXELS) + 1
+            let canvas_y_Offset = headerHeight + 1
 
             LifeHtml.Canvas.initialize width height CELL_SIDE_PIXELS canvas_x_Offset canvas_y_Offset
             Span [ 

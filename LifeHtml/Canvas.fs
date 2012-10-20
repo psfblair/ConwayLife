@@ -55,8 +55,8 @@ open System
       [<JavaScript>]
       let adjustInitArrayAndRedraw (context:CanvasRenderingContext2D) width height cellSide canvasXOffset canvasYOffset (evt:Dom.Event) =
          let event = evt :?> Dom.MouseEvent
-         let x = (event.ClientX / cellSide) - canvasXOffset
-         let y = (event.ClientY / cellSide) - canvasYOffset
+         let x = (event.ClientX - canvasXOffset) / cellSide
+         let y = (event.ClientY - canvasYOffset) / cellSide
          toggleCellAndRedraw (x,y) (drawLife context width height cellSide)
 
       type GameEvent = | Go | Stop | Reset

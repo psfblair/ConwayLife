@@ -11,7 +11,7 @@
       headerHeight=jQuery("#header").height();
       width=jQuery("body").width();
       height=jQuery("#page").height()-headerHeight*2;
-      canvas_y_Offset=(headerHeight/this.CELL_SIDE_PIXELS>>0)+1;
+      canvas_y_Offset=headerHeight+1;
       Canvas.initialize(width,height,this.CELL_SIDE_PIXELS,0,canvas_y_Offset);
       return Default.Span(List.ofArray([Canvas.nodes(),Default.Div(List.ofArray([(_this=Default.Attr(),_this.NewAttr("style","clear:both"))]))]));
      }

@@ -17,9 +17,9 @@ type CanvasFrame() =
     [<JavaScript>]
     let CELL_SIDE_PIXELS = 10
     [<JavaScript>]
-    let CANVAS_X_OFFSET = 1
+    let CANVAS_X_OFFSET = 10
     [<JavaScript>]
-    let CANVAS_Y_OFFSET = 6
+    let CANVAS_Y_OFFSET = 65
     
     [<JavaScript>]
     override this.Body = 

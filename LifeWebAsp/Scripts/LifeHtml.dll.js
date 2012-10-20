@@ -11,8 +11,8 @@
     adjustInitArrayAndRedraw:function(context,width,height,cellSide,canvasXOffset,canvasYOffset,evt)
     {
      var x,y;
-     x=(evt.clientX/cellSide>>0)-canvasXOffset;
-     y=(evt.clientY/cellSide>>0)-canvasYOffset;
+     x=(evt.clientX-canvasXOffset)/cellSide>>0;
+     y=(evt.clientY-canvasYOffset)/cellSide>>0;
      return Game.toggleCellAndRedraw(x,y,function(gameState)
      {
       return Canvas.drawLife(context,width,height,cellSide,gameState);
