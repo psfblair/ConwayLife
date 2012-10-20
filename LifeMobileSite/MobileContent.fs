@@ -11,7 +11,6 @@ module MobileContent =
     type BodyControl() = 
         inherit IntelliFactory.WebSharper.Web.Control()
 
-        [<JavaScript>]
         let CELL_SIDE_PIXELS = 10
 
         [<JavaScript>]

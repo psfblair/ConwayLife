@@ -10,15 +10,10 @@ open Life.Game
 type CanvasFrame() = 
     inherit IntelliFactory.WebSharper.Web.Control()
          
-    [<JavaScript>]
     let CANVAS_WIDTH = 1200
-    [<JavaScript>]
     let CANVAS_HEIGHT = 650
-    [<JavaScript>]
     let CELL_SIDE_PIXELS = 10
-    [<JavaScript>]
     let CANVAS_X_OFFSET = 10
-    [<JavaScript>]
     let CANVAS_Y_OFFSET = 65
     
     [<JavaScript>]
