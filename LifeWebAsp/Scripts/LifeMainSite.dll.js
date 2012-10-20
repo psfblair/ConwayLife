@@ -8,7 +8,7 @@
      get_Body:function()
      {
       var _this,x,_this1,_this2,f,x1,x3,_this4,_this5,f2,x4,x5,_this6,_this7,f3,x6,_this8,_this9;
-      Canvas.initialize(this.CANVAS_WIDTH,this.CANVAS_HEIGHT,this.CELL_SIDE_PIXELS,this.X_OFFSET,this.Y_OFFSET);
+      Canvas.initialize(this.CANVAS_WIDTH,this.CANVAS_HEIGHT,this.CELL_SIDE_PIXELS,this.CANVAS_X_OFFSET,this.CANVAS_Y_OFFSET);
       return Default.Span(List.ofArray([Operators.add(Default.Span(List.ofArray([(_this=Default.Attr(),_this.NewAttr("style","position:absolute; top:20px; left:425px"))])),List.ofArray([(x=Default.Input(List.ofArray([(_this1=Default.Attr(),_this1.NewAttr("type","button")),(_this2=Default.Attr(),_this2.NewAttr("value","Go"))])),(f=(x1=function()
       {
        return function()

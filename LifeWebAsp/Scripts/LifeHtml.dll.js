@@ -8,11 +8,11 @@
     {
      return _FSharpEvent_1.New();
     }),
-    adjustInitArrayAndRedraw:function(context,width,height,cellSide,cellXOffset,cellYOffset,evt)
+    adjustInitArrayAndRedraw:function(context,width,height,cellSide,canvasXOffset,canvasYOffset,evt)
     {
      var x,y;
-     x=(evt.clientX/cellSide>>0)-cellXOffset;
-     y=(evt.clientY/cellSide>>0)-cellYOffset;
+     x=(evt.clientX/cellSide>>0)-canvasXOffset;
+     y=(evt.clientY/cellSide>>0)-canvasYOffset;
      return Game.toggleCellAndRedraw(x,y,function(gameState)
      {
       return Canvas.drawLife(context,width,height,cellSide,gameState);
@@ -110,7 +110,7 @@
      });
      return _this.NewTag("canvas",x);
     }),
-    initialize:function(width,height,cellSide,cellXOffset,cellYOffset)
+    initialize:function(width,height,cellSide,canvasXOffset,canvasYOffset)
     {
      var target,_this;
      if(Unchecked.Equals((target=Canvas.canvas(),target.getContext),undefined))
@@ -121,7 +121,7 @@
      Canvas.canvas().height=height;
      Canvas.context().canvas.addEventListener("click",function(evt)
      {
-      return Canvas.adjustInitArrayAndRedraw(Canvas.context(),width,height,cellSide,cellXOffset,cellYOffset,evt);
+      return Canvas.adjustInitArrayAndRedraw(Canvas.context(),width,height,cellSide,canvasXOffset,canvasYOffset,evt);
      },false);
      Canvas.drawLife(Canvas.context(),width,height,cellSide,Game.currentState().contents);
      return Util.addListener((_this=Canvas.GameEvents(),_this.event),function(_arg1)

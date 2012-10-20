@@ -53,10 +53,10 @@ open System
          context.Save()
 
       [<JavaScript>]
-      let adjustInitArrayAndRedraw (context:CanvasRenderingContext2D) width height cellSide cellXOffset cellYOffset (evt:Dom.Event) =
+      let adjustInitArrayAndRedraw (context:CanvasRenderingContext2D) width height cellSide canvasXOffset canvasYOffset (evt:Dom.Event) =
          let event = evt :?> Dom.MouseEvent
-         let x = (event.ClientX / cellSide) - cellXOffset
-         let y = (event.ClientY / cellSide) - cellYOffset
+         let x = (event.ClientX / cellSide) - canvasXOffset
+         let y = (event.ClientY / cellSide) - canvasYOffset
          toggleCellAndRedraw (x,y) (drawLife context width height cellSide)
 
       type GameEvent = | Go | Stop | Reset
@@ -74,7 +74,7 @@ open System
       let context = canvas.GetContext "2d"
 
       [<JavaScript>]
-      let initialize (width:int) (height:int) (cellSide:int) (cellXOffset:int) (cellYOffset:int) = 
+      let initialize (width:int) (height:int) (cellSide:int) (canvasXOffset:int) (canvasYOffset:int) = 
          // Conditional initialization for the case of IE.
          if (JavaScript.Get "getContext" canvas = JavaScript.Undefined) then
                initializeForIE6 canvas
@@ -82,7 +82,7 @@ open System
          canvas.Width  <- width
          canvas.Height <- height
 
-         context.Canvas.AddEventListener("click", (adjustInitArrayAndRedraw context width height cellSide cellXOffset cellYOffset), false)
+         context.Canvas.AddEventListener("click", (adjustInitArrayAndRedraw context width height cellSide canvasXOffset canvasYOffset), false)
           
          drawLife context width height cellSide !currentState
 

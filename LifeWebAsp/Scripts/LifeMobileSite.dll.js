@@ -7,12 +7,12 @@
     BodyControl:Runtime.Class({
      get_Body:function()
      {
-      var headerHeight,width,height,yOffset,_this;
+      var headerHeight,width,height,canvas_y_Offset,_this;
       headerHeight=jQuery("#header").height();
       width=jQuery("body").width();
       height=jQuery("#page").height()-headerHeight*2;
-      yOffset=(headerHeight/this.CELL_SIDE_PIXELS>>0)+1;
-      Canvas.initialize(width,height,this.CELL_SIDE_PIXELS,0,yOffset);
+      canvas_y_Offset=(headerHeight/this.CELL_SIDE_PIXELS>>0)+1;
+      Canvas.initialize(width,height,this.CELL_SIDE_PIXELS,0,canvas_y_Offset);
       return Default.Span(List.ofArray([Canvas.nodes(),Default.Div(List.ofArray([(_this=Default.Attr(),_this.NewAttr("style","clear:both"))]))]));
      }
     }),

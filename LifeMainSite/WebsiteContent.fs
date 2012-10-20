@@ -17,13 +17,13 @@ type CanvasFrame() =
     [<JavaScript>]
     let CELL_SIDE_PIXELS = 10
     [<JavaScript>]
-    let X_OFFSET = 1
+    let CANVAS_X_OFFSET = 1
     [<JavaScript>]
-    let Y_OFFSET = 6
+    let CANVAS_Y_OFFSET = 6
     
     [<JavaScript>]
     override this.Body = 
-        LifeHtml.Canvas.initialize CANVAS_WIDTH CANVAS_HEIGHT CELL_SIDE_PIXELS X_OFFSET Y_OFFSET
+        LifeHtml.Canvas.initialize CANVAS_WIDTH CANVAS_HEIGHT CELL_SIDE_PIXELS CANVAS_X_OFFSET CANVAS_Y_OFFSET
         Span [ 
             Span [Attr.Style "position:absolute; top:20px; left:425px"] -< [
                     Input [Attr.Type "button"; Attr.Value "Go"] |>! OnClick (fun element eventArguments -> Go |> GameEvents.Trigger) 
