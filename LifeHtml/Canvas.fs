@@ -5,7 +5,6 @@ open System
       open IntelliFactory.WebSharper  // For Inline, JavaScript attributes, dom events
       open IntelliFactory.WebSharper.Html
       open IntelliFactory.WebSharper.Html5
-      open Life.Core
       open Life.Game
  
       [<JavaScript>]
@@ -26,18 +25,6 @@ open System
       [<JavaScript>]
       let mutable canvasYOffset = 0
 
-      [<JavaScript>]
-      let mutable cellXOffset = 0
-
-      [<JavaScript>]
-      let mutable cellYOffset = 0
-
-      [<JavaScript>]
-      let mutable previousCanvasCoordinates = None
-
-      [<JavaScript>]
-      let mutable mouseDownCanvasCoordinates = None
-
       // Since IE does not support canvas natively. Initialization of the 
       // canvas element is done through the excanvas.js library.
       [<Inline "G_vmlCanvasManager.initElement($elem)">]
@@ -46,36 +33,15 @@ open System
       type CanvasCoordinatePair = float * float
 
       [<JavaScript>]
-      let pairMap func pair = (func (fst pair)), (func (snd pair))
+      let transformCellCoordinatesToCanvasCoordinates cell : CanvasCoordinatePair = 
+         let centerX = ((fst cell) * cellSide) + (cellSide / 2) |> float
+         let centerY = ((snd cell) * cellSide) + (cellSide / 2) |> float
+         (centerX, centerY)
 
       [<JavaScript>]
-      let pairMap2 func secondPair firstPair = (func (fst firstPair) (fst secondPair)), (func (snd firstPair) (snd secondPair))
-
-      [<JavaScript>]
-      let transformCellCoordinatesToCanvasCoordinates (cell: Cell) : CanvasCoordinatePair = 
-         let multiplyByCellSide element = element * cellSide
-         let addHalfACellSide element = element + (cellSide / 2)
-
-         cell |> pairMap2 (-) (cellXOffset, cellYOffset)
-              |> pairMap multiplyByCellSide
-              |> pairMap addHalfACellSide
-              |> pairMap float
-
-      [<JavaScript>]
-      let transformPixelPairToCellPair (pair: CanvasCoordinatePair) : Cell = 
-         let divideByCellSide element = element / (float cellSide)
-         pair |> pairMap divideByCellSide |> pairMap int
-
-      [<JavaScript>]
-      let cellIsWithinViewableCanvas (canvasCoordinatePair: CanvasCoordinatePair) =
-        let isBetweenOriginAnd (thePoint: float) (theLimit: int) = (thePoint > 0.0) && (thePoint < (float theLimit))
-        let (xOk, yOk) = canvasCoordinatePair |> pairMap2 isBetweenOriginAnd (canvas.Width, canvas.Height)
-        xOk && yOk
-
-      [<JavaScript>]
-      let canvasCoordinatesFromMouseEvent (evt: Dom.Event) : CanvasCoordinatePair =
-         let event = evt :?> Dom.MouseEvent
-         (event.ClientX, event.ClientY) |> pairMap2 (-) (canvasXOffset, canvasYOffset) |> pairMap float
+      let cellIsWithinViewableCanvas canvasCoordinatePair =
+        (fst canvasCoordinatePair) > 0. && (fst canvasCoordinatePair) < (float canvas.Width) &&
+            (snd canvasCoordinatePair) > 0. && (snd canvasCoordinatePair) < (float canvas.Height)
 
       [<JavaScript>]
       let drawSmallCircleAtPoint canvasCoordinatePair =
@@ -105,51 +71,11 @@ open System
          context.Save()
 
       [<JavaScript>]
-      let pixelsMovedDuring (evt:Dom.Event) (previous: option<CanvasCoordinatePair>) : CanvasCoordinatePair = 
-         match previous with
-            | None -> (0.0, 0.0)
-            | Some(prevX,prevY) -> canvasCoordinatesFromMouseEvent evt |> pairMap2 (-) (prevX, prevY)
-
-      [<JavaScript>]
-      let didNotMoveDuringClick (evt:Dom.Event) = 
-         let withinMoveTolerance distanceMoved = (abs distanceMoved) < (float cellSide)
-         let (didNotMoveX, didNotMoveY) = pixelsMovedDuring evt mouseDownCanvasCoordinates |> pairMap withinMoveTolerance
-         didNotMoveX && didNotMoveY
-
-      [<JavaScript>]
       let adjustInitArrayAndRedraw (evt:Dom.Event) =
-         if didNotMoveDuringClick evt then
-            let cell = canvasCoordinatesFromMouseEvent evt |> transformPixelPairToCellPair
-                                                           |> pairMap2 (+) (cellXOffset, cellYOffset)
-            toggleCellAndRedraw cell drawLife
-         else
-            ()
-      
-      [<JavaScript>]
-      let setMouseDown (evt:Dom.Event) = 
-         let canvasCoordinates = canvasCoordinatesFromMouseEvent evt
-         previousCanvasCoordinates <- Some(canvasCoordinates)
-         mouseDownCanvasCoordinates <- Some(canvasCoordinates)
-
-      [<JavaScript>]
-      let setMouseUp (evt:Dom.Event) =
-         adjustInitArrayAndRedraw evt
-         previousCanvasCoordinates <- None
-         mouseDownCanvasCoordinates <- None
-      
-      [<JavaScript>]
-      let updateCellOffsets offsetPair =
-         cellXOffset <- cellXOffset - (fst offsetPair)
-         cellYOffset <- cellYOffset - (snd offsetPair)
-                          
-      [<JavaScript>]
-      let scrollViewport (evt:Dom.Event) = 
-         match previousCanvasCoordinates with
-            | None -> ()
-            | Some(prevX,prevY) as previous ->
-                pixelsMovedDuring evt previous |> transformPixelPairToCellPair |> updateCellOffsets
-                previousCanvasCoordinates <- Some <| canvasCoordinatesFromMouseEvent evt              
-                drawLife !currentState
+         let event = evt :?> Dom.MouseEvent
+         let x = (event.ClientX - canvasXOffset) / cellSide
+         let y = (event.ClientY - canvasYOffset) / cellSide
+         toggleCellAndRedraw (x,y) drawLife
 
       type GameEvent = | Go | Stop | Reset
      
@@ -168,9 +94,7 @@ open System
          canvasXOffset <- canvasXOffsetPixels
          canvasYOffset <- canvasYOffsetPixels
 
-         context.Canvas.AddEventListener("mousedown", setMouseDown, false)
-         context.Canvas.AddEventListener("mouseup", setMouseUp, false)
-         context.Canvas.AddEventListener("mousemove", scrollViewport, false)
+         context.Canvas.AddEventListener("click", adjustInitArrayAndRedraw, false)
 
          drawLife !currentState
 
